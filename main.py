@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
+import pickle
 from langchain.chains import RetrievalQAWithSourcesChain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import WebBaseLoader
@@ -16,9 +17,6 @@ llm = HuggingFaceEndpoint(
     repo_id=repo_id, max_length=512, temperature=0.5, token='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'
 )
 
-# Global variable to store embeddings
-vectorindex_openai = None
-
 # Store chat history
 chat_history = []
 
@@ -32,9 +30,9 @@ def index():
 
 @app.route('/process', methods=['POST'])
 def process():
-    global vectorindex_openai
     try:
         urls = [request.form[f'url{i}'] for i in range(1, 4)]
+        file_path = "vector_index1.pkl"
 
         # Load data
         loader = WebBaseLoader(urls)
@@ -51,28 +49,44 @@ def process():
         embeddings = HuggingFaceHubEmbeddings()
         vectorindex_openai = FAISS.from_documents(docs, embeddings)
 
+        # Save the FAISS index to a pickle file
+        with open(file_path, "wb") as f:
+            pickle.dump(vectorindex_openai, f)
+
         return redirect(url_for('chatbot'))
 
     except Exception as e:
         return render_template('index.html', main_placeholder=f"Error: {e}")
 
 @app.route('/chatbot', methods=['POST', 'GET'])
+@app.route('/chatbot', methods=['POST', 'GET'])
 def chatbot():
-    global chat_history, vectorindex_openai
+    global chat_history
     if request.method == 'POST':
         try:
             question = request.form.get('question')
+            file_path = "vector_index1.pkl"
             chat_response = ""
 
-            if question and vectorindex_openai:
-                chain = RetrievalQAWithSourcesChain.from_llm(llm=llm, retriever=vectorindex_openai.as_retriever())
-                result = chain({"question": question}, return_only_outputs=True)
-                chat_response = result.get("answer", "")
-                chat_history.append({'sender': 'user', 'message': question})
-                chat_history.append({'sender': 'bot', 'message': chat_response})
-            else:
-                chat_response = "No vectorstore available. Please process URLs first."
+            if question:
+                print("Received question:", question)  # Add this line for debugging
+                if os.path.exists(file_path):
+                    print("Vectorstore file exists")  # Add this line for debugging
+                    with open(file_path, "rb") as f:
+                        vectorstore = pickle.load(f)
+                        if vectorstore:
+                            print("Vectorstore loaded successfully")  # Add this line for debugging
+                            chain = RetrievalQAWithSourcesChain.from_llm(llm=llm, retriever=vectorstore.as_retriever())
+                            result = chain({"question": question}, return_only_outputs=True)
+                            chat_response = result.get("answer", "")
+                            chat_history.append({'sender': 'user', 'message': question})
+                            chat_history.append({'sender': 'bot', 'message': chat_response})
+                        else:
+                            chat_response = "Failed to load vectorstore. Please check the file."
+                else:
+                    chat_response = "No vectorstore file found. Please process URLs first."
 
+            print("Chatbot response:", chat_response)  # Add this line for debugging
             return render_template('question.html', chat_response=chat_response, chat_history=chat_history)
 
         except Exception as e:
@@ -87,5 +101,5 @@ def process_urls():
     # Process URLs here
     return render_template('question.html', chat_history=chat_history)
 
-if __name__ == '__main__':
-    app.run()
+if __name__ == '_main_':
+    app.run(debug=True,port=5000)
