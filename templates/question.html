@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/bg16.png');
+            background-size: cover;
+            background-position: center;
+            color: #333; /* Dark gray text */
+            background-color: #f2f2f2; /* Light gray background */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .chat-history {
+            margin-bottom: 20px;
+            overflow-y: auto;
+            max-height: 550px; /* Increase the max-height to the desired size */
+            width: 1000px; /* Reduce the max-width as needed */
+            margin-left: auto;
+            margin-top: 10px; 
+            margin-right: 5px;
+        }
+
+        .chat-container {
+            max-width: 700px;
+            width: 800px;
+            margin: 20px auto;
+            margin-left: 650px;
+            background-color: rgba(218, 212, 254, 0.2); /* Update background color and transparency */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: auto;
+        }
+
+        .chat {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .user-chat .chat-message {
+            align-self: flex-end;
+            background-color: rgba(126, 86, 138, 0.9); /* Light blue background for user messages */
+            margin-left: auto; /* Push user messages to the right */
+            color: #fff;
+        }
+
+        .bot-chat .chat-message {
+            max-width: 60%; /* Adjust the maximum width as needed */
+            align-self: flex-start; /* Ensure bot messages always align to the left */
+            background-color: rgba(218, 212, 254, 0.3); /* Background color and transparency */
+            margin-right: auto; /* No right margin */
+            margin-left: 0; /* Ensure left alignment */
+        }
+
+        .chat-message {
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 20px; /* Increase the border-radius for rounded corners */
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px; /* Adjust spacing between chat messages */
+        }
+
+        .chat input[type="text"] {
+            width: calc(100% - 70px);
+            padding: 10px;
+            border: 1px solid rgba(128, 128, 128, 0.9);
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.6); /* Update input field background color and transparency */
+            color: #333; /* Update text color for better visibility */
+        }
+
+        .chat button[type="submit"] {
+            background-color: #7E568A; /* Change button background color */
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .chat button[type="submit"]:hover {
+            background-color: #63539C; /* Change button background color on hover */
+        }
+
+        /* Typing animation */
+        .typing-indicator {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            color: #333;
+        }
+
+        .typing-indicator div {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #7E568A; /* Dark purple */
+            animation: typing-bounce 1s infinite ease-in-out alternate;
+            margin-right: 5px;
+        }
+
+        @keyframes typing-bounce {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="chat-history" id="chatHistory">
+        <!-- Custom initial chatbot response -->
+        <div class="chat bot-chat">
+            <div class="chat-message">"Welcome aboard! Let's begin analyzing the URLs with WebX."</div>
+        </div>
+        <!-- Render other chat history messages -->
+        {% for item in chat_history %}
+            <div class="chat {% if item['sender'] == 'user' %}user-chat{% else %}bot-chat{% endif %}">
+                <div class="chat-message">{{ item['message'] }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="chat-container">
+        <form action="/chatbot" method="POST" class="chat" id="chatForm">
+            <input type="text" id="question" name="question" placeholder="Enter your question...">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <script>
+        // Automatically scroll to the bottom of the chat history container
+        function scrollToBottom() {
+            var chatHistory = document.getElementById("chatHistory");
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // Scroll to bottom when the page loads and after each message sent
+        window.onload = scrollToBottom;
+        document.getElementById("chatForm").onsubmit = function() {
+            // Append the "Typing" message to the chat history
+            var typingIndicator = document.createElement("div");
+            typingIndicator.classList.add("typing-indicator");
+            typingIndicator.innerHTML = "<div></div><div></div><div></div>";
+            document.getElementById("chatHistory").appendChild(typingIndicator);
+            scrollToBottom();
+        };
+    </script>
+</body>
+</html>

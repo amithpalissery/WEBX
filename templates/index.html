@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEBX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/bg15.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #333; /* Dark gray text */
+            background-color: #f2f2f2; /* Light gray background */
+        }
+
+        h1 {
+            text-align: center;
+            padding-top: 30px;
+            color:  #7E568A; /* Dark Purple */
+            font-size: 50px; /* Increase font size */
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 165,0, 0.1); /* Semi-transparent Light Pink */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #7E568A ; /* Dark Blue */
+            text-align: left;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #7b6992; /* Dark Blue border */
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent Light Pink */
+            color: #383667; /* Dark Purple */
+        }
+
+        button[type="submit"] {
+            background-color: #63539C; /* Dark Purple */
+            color: #fff; /* White text */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #7E568A; /* Darker Purple on hover */
+        }
+
+        .response-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: rgba(248, 155, 186, 0.9); /* Semi-transparent Light Pink */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: none; /* Initially hide response containers */
+        }
+
+        .response-container.visible {
+            display: block; /* Show response containers if they have content */
+        }
+
+        .response-container h2 {
+            color: #383667; /* Dark Purple */
+            margin-bottom: 10px;
+        }
+
+        .response-container p {
+            color: #7E568A; /* Medium gray text */
+        }
+
+        .loading-container {
+            text-align: center;
+            display: none; /* Initially hidden */
+            margin-top: 20px;
+        }
+
+        .loading-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #7E568A; /* Dark Purple */
+            border-radius: 50%;
+            margin: 0 5px;
+            animation: dot-move 1s infinite alternate; /* Animation */
+        }
+
+        .loading-dot:nth-child(2) {
+            animation-delay: 0.2s; /* Delay for the second dot */
+        }
+
+        .loading-dot:nth-child(3) {
+            animation-delay: 0.4s; /* Delay for the third dot */
+        }
+
+        .loading-dot:nth-child(4) {
+            animation-delay: 0.6s; /* Delay for the fourth dot */
+        }
+
+        @keyframes dot-move {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>WebX</h1>
+
+    <form id="form" action="/process" method="POST">
+        <label for="url1">URL 1:</label>
+        <input type="text" id="url1" name="url1"><br><br>
+
+        <label for="url2">URL 2:</label>
+        <input type="text" id="url2" name="url2"><br><br>
+
+        <label for="url3">URL 3:</label>
+        <input type="text" id="url3" name="url3"><br><br>
+
+        <button type="submit">Process URLs</button>
+    </form>
+
+    <div class="response-container {% if main_placeholder %}visible{% endif %}">
+        <p>{{ main_placeholder }}</p>
+    </div>
+
+    <div class="loading-container" id="loadingContainer">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+    </div>
+
+    <script>
+        document.getElementById("form").onsubmit = function() {
+            document.getElementById("loadingContainer").style.display = "block"; // Show the loading indicator when the form is submitted
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEBX Intro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif; /* Change the font-family to Poppins */
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/bg8.jpg');
+            background-size: cover;
+            background-position: center top; /* Adjusted background position */
+            background-attachment: fixed;
+            color: #fff; /* White text */
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+            height: 100vh; /* Set the height of the body to the full viewport height */
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: -180px auto 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
+            text-align: justify;
+            color: #383667; /* Dark purple text */
+        }
+
+        h1 {
+            text-align: center;
+            color: #63539C; /* Light purple heading */
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        a {
+            color: #4D5180; /* Dark purple link */
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        a:hover {
+            color: #AA5F8D; /* Light purple on hover */
+        }
+
+        .more-info-container {
+            overflow-y: auto;
+            max-height: 200px; /* Adjust the height as needed */
+        }
+
+        .more-info {
+            display: none;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        button {
+            background-color: #63539C; /* Dark purple button */
+            color: #fff; /* White text */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.0);
+        }
+
+        button:hover {
+            background-color: #7E568A; /* Light purple on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to WebX</h1>
+        <p>"WebXbot simplifies web content processing. Extract insights effortlessly from articles, blogs, and more. Just enter URLs, sit back, and let WebXbot handle the rest. Your ultimate solution for efficient web content processing."</p>
+        <p><a href="#" id="learn-more">Learn more</a></p>
+        <div class="more-info-container">
+            <div class="more-info" id="moreInfo">
+                <p>In an era defined by the overwhelming abundance of internet-based information, efficiently distilling relevant insights from web content is paramount. A comprehensive system adept at effective information retrieval is introduced, leveraging advanced NLP techniques and similarity search methodologies.</p>
+                <p>By integrating LangChain's Web Loader for data acquisition and OpenAI's embeddings for text representation, the system endeavors to streamline the querying and retrieval process from diverse online sources. Leveraging FAISS, a robust similarity search library, facilitates swift indexing and retrieval, thereby enhancing user engagement and experience.</p>
+                <p>The system's architecture and functionalities are explored, elucidating its components and processes for efficient information extraction from web content. Implementation involves text splitting, embedding vector generation, and FAISS indexing, with resultant embeddings stored and indexed for enhanced retrieval speed. While the method showcases notable advantages in its speed and accuracy, it may require optimization for optimal performance in handling vast and varied datasets.</p>
+                <p>Ultimately, this system offers a robust solution for navigating the vast landscape of online information, empowering users to pose queries and receive relevant answers from article websites seamlessly.</p>
+            </div>
+        </div>
+        <div class="button-container">
+            <a href="/index.html"><button>Chat with WebX</button></a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const learnMoreLink = document.getElementById('learn-more');
+            const moreInfo = document.getElementById('moreInfo');
+
+            learnMoreLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                if (moreInfo.style.display === 'none') {
+                    moreInfo.style.display = 'block';
+                    learnMoreLink.textContent = 'Hide details';
+                } else {
+                    moreInfo.style.display = 'none';
+                    learnMoreLink.textContent = 'Learn more';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
