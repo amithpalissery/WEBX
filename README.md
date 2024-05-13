@@ -13,4 +13,4 @@ or traders monitoring news and trends.<br>
 
 ## License
 
-WebX is released under the [MIT License](link_to_license). Feel free to use, modify, and distribute it as per the terms of the license.
+WebX is released under the [MIT License](https://github.com/aswin00000/WEBX/blob/main/LICENSE). Feel free to use, modify, and distribute it as per the terms of the license.
