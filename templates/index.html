@@ -43,7 +43,7 @@
             text-align: left;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="number"] {
             width: calc(100% - 22px);
             padding: 10px;
             margin-bottom: 20px;
@@ -134,14 +134,13 @@
     <h1>WebX</h1>
 
     <form id="form" action="/process" method="POST">
-        <label for="url1">URL 1:</label>
-        <input type="text" id="url1" name="url1"><br><br>
+        <label for="url-count">Number of URLs:</label>
+        <input type="number" id="url-count" min="1" value="3">
+        <br><br>
 
-        <label for="url2">URL 2:</label>
-        <input type="text" id="url2" name="url2"><br><br>
-
-        <label for="url3">URL 3:</label>
-        <input type="text" id="url3" name="url3"><br><br>
+        <div id="url-inputs">
+            <!-- URL input fields will be dynamically added here -->
+        </div>
 
         <button type="submit">Process URLs</button>
     </form>
@@ -158,6 +157,29 @@
     </div>
 
     <script>
+        const urlCountInput = document.getElementById('url-count');
+        const urlInputsContainer = document.getElementById('url-inputs');
+
+        function updateUrlInputs() {
+            const urlCount = urlCountInput.value;
+            urlInputsContainer.innerHTML = ''; // Clear existing URL input fields
+
+            for (let i = 1; i <= urlCount; i++) {
+                const urlInput = document.createElement('div');
+                urlInput.innerHTML = `
+                    <label for="url${i}">URL ${i}:</label>
+                    <input type="text" id="url${i}" name="url[]" required><br><br>
+                `;
+                urlInputsContainer.appendChild(urlInput);
+            }
+        }
+
+        // Initialize URL inputs with the default value
+        updateUrlInputs();
+
+        // Update URL inputs when the count changes
+        urlCountInput.addEventListener('input', updateUrlInputs);
+
         document.getElementById("form").onsubmit = function() {
             document.getElementById("loadingContainer").style.display = "block"; // Show the loading indicator when the form is submitted
         };
