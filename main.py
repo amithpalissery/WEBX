@@ -31,7 +31,10 @@ def index():
 @app.route('/process', methods=['POST'])
 def process():
     try:
-        urls = [request.form[f'url{i}'] for i in range(1, 4)]
+        urls = request.form.getlist('url[]')
+        if not urls:
+            return render_template('index.html', main_placeholder="Please provide at least one URL.")
+
         file_path = "vector_index1.pkl"
 
         # Load data
@@ -58,7 +61,7 @@ def process():
     except Exception as e:
         return render_template('index.html', main_placeholder=f"Error: {e}")
 
-@app.route('/chatbot', methods=['POST', 'GET'])
+
 @app.route('/chatbot', methods=['POST', 'GET'])
 def chatbot():
     global chat_history
@@ -95,11 +98,5 @@ def chatbot():
     else:
         return render_template('question.html', chat_history=chat_history)
 
-
-@app.route('/process_urls', methods=['POST'])
-def process_urls():
-    # Process URLs here
-    return render_template('question.html', chat_history=chat_history)
-
 if __name__ == '_main_':
-    app.run(debug=True,port=5000)
+    app.run(debug=True, port=5000)
