@@ -4,3 +4,4 @@ langchain-community
 faiss-cpu
 beautifulsoup4
 huggingface-hub
+transformers
