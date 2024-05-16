@@ -18,12 +18,14 @@ To run this project, you will need:
 - Flask
 - LangChain
 - HuggingFace libraries
+- Transformers libraries
+- faiss setup cpu or gpu
 
 ### Installation
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/WebX.git
+    git clone https://github.com/aswin00000/WebX.git
     cd WebX
     ```
 
