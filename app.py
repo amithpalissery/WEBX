@@ -11,10 +11,10 @@ from langchain_community.llms import HuggingFaceEndpoint
 app = Flask(__name__)
 
 # Load the HuggingFace model
-os.environ['HUGGINGFACEHUB_API_TOKEN'] = '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'
+os.environ['HUGGINGFACEHUB_API_TOKEN'] = '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'
 repo_id = "mistralai/Mistral-7B-Instruct-v0.2"
 llm = HuggingFaceEndpoint(
-    repo_id=repo_id, max_length=512, temperature=0.5, token='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'
+    repo_id=repo_id, max_length=512, temperature=0.5, token='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'
 )
 
 # Store chat history
